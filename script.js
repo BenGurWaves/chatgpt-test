@@ -1,69 +1,23 @@
 const glow=document.querySelector('.cursor-glow');
-const prefersReducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+if(!reduced){window.addEventListener('pointermove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'});}
 
-window.addEventListener('pointermove',e=>{
-  if(prefersReducedMotion)return;
-  glow.style.left=e.clientX+'px';
-  glow.style.top=e.clientY+'px';
-});
+const demos={
+ code:{mode:'CODE / ARCHITECT',title:'Build a landing page that feels expensive.',html:'<p>Start by removing everything that looks like a template.</p><div class="code-art"><span>01</span><code>define the visual language</code><span>02</span><code>make hierarchy unavoidable</code><span>03</span><code>animate only what matters</code><span>04</span><code>ship the thing</code></div><p class="answer-last">The result should not announce that it was built by AI. It should make people wonder who built it.</p>'},
+ strategy:{mode:'STRATEGY / ADVERSARY',title:'Find the hidden weakness in my plan.',html:'<p>Do not start by improving it. Start by trying to break it.</p><div class="strategy-list"><div><b>01</b><span>ASSUMPTION</span><strong>What must be true for this to work?</strong></div><div><b>02</b><span>BOTTLENECK</span><strong>Where does the plan fail at scale?</strong></div><div><b>03</b><span>BLIND SPOT</span><strong>What evidence would change the decision?</strong></div></div><p class="answer-last">A useful collaborator is not the one who agrees fastest. It is the one who finds the expensive mistake before you make it.</p>'},
+ creative:{mode:'CREATIVE / DIRECTOR',title:'Take this vague idea and make it unforgettable.',html:'<p>First, give the idea a point of view.</p><div class="creative-board"><div><span>MOOD</span><b>quiet confidence</b></div><div><span>RULE</span><b>one unforgettable gesture</b></div><div><span>VOICE</span><b>precise, never loud</b></div><div><span>IMAGE</span><b>light moving through glass</b></div></div><p class="answer-last">Then remove everything that does not reinforce the idea. Distinctiveness is usually subtraction wearing better clothes.</p>'},
+ science:{mode:'SCIENCE / TRANSLATOR',title:'Explain something impossible without dumbing it down.',html:'<p>Keep the real mechanism. Change the mental model.</p><div class="science-flow"><span>COMPLEX SYSTEM</span><b>→</b><span>MENTAL MODEL</span><b>→</b><span>INTUITION</span></div><p>Quantum behavior, neural networks, relativity, cryptography. The goal is not to replace the mathematics. It is to give the mathematics somewhere useful to land.</p><p class="answer-last">Clarity is not simplification. It is compression without losing the signal.</p>'}
+};
 
-const scrollToDemo=()=>document.querySelector('#demo').scrollIntoView({behavior:'smooth'});
-document.querySelector('#demoButton').addEventListener('click',scrollToDemo);
-document.querySelector('#enterButton').addEventListener('click',scrollToDemo);
-
-const form=document.querySelector('#composer');
-const input=document.querySelector('#prompt');
-const messages=document.querySelector('#messages');
-const replies=[
-  'It wins because it feels like a collaborator, not a calculator in a blazer. The conversation stays stable while the task changes.',
-  'The interface is doing real work here. It removes friction, keeps context alive, and makes the next step obvious without being pushy.',
-  'The strongest system is the one that keeps the human oriented. Everything else is just expensive noise.'
-];
-let replyIndex=0;
-
-const historyButtons=document.querySelectorAll('.history');
-historyButtons.forEach(btn=>btn.addEventListener('click',()=>{
-  historyButtons.forEach(x=>x.classList.remove('active'));
-  btn.classList.add('active');
-  input.value=btn.textContent.trim();
+document.querySelectorAll('.prompt').forEach(button=>button.addEventListener('click',()=>{
+ document.querySelectorAll('.prompt').forEach(x=>x.classList.remove('active'));button.classList.add('active');
+ const d=demos[button.dataset.demo];
+ const body=document.querySelector('.answer-body');
+ body.classList.add('changing');
+ setTimeout(()=>{document.querySelector('#answerMode').textContent=d.mode;document.querySelector('#answerTitle').textContent=d.title;document.querySelector('#answerContent').innerHTML=d.html;body.classList.remove('changing')},reduced?0:220);
 }));
 
-form.addEventListener('submit',e=>{
-  e.preventDefault();
-  const text=input.value.trim();
-  if(!text)return;
+document.querySelectorAll('.rival').forEach(r=>r.addEventListener('click',()=>{document.querySelectorAll('.rival').forEach(x=>x.classList.remove('active'));r.classList.add('active')}));
 
-  const user=document.createElement('div');
-  user.className='message user-message';
-  user.innerHTML='<span class="avatar">B</span><p></p>';
-  user.querySelector('p').textContent=text;
-  messages.appendChild(user);
-
-  input.value='';
-  const ai=document.createElement('div');
-  ai.className='message ai-message';
-  ai.innerHTML='<span class="ai-symbol">✦</span><div><div class="thinking"><span></span><span></span><span></span></div><p></p></div>';
-  messages.appendChild(ai);
-  messages.scrollTop=messages.scrollHeight;
-
-  setTimeout(()=>{
-    const thinking=ai.querySelector('.thinking');
-    if(thinking)thinking.remove();
-    ai.querySelector('p').textContent=replies[replyIndex++%replies.length];
-    messages.scrollTop=messages.scrollHeight;
-  }, prefersReducedMotion ? 0 : 760);
-});
-
-const revealItems=[...document.querySelectorAll('.feature-card, .rival-card, .statement h2, .statement-copy, .future-copy')];
-if(!prefersReducedMotion && 'IntersectionObserver' in window){
-  revealItems.forEach(el=>el.classList.add('reveal'));
-  const io=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add('in-view');
-        io.unobserve(entry.target);
-      }
-    });
-  },{threshold:.15});
-  revealItems.forEach(el=>io.observe(el));
-}
+const reveal=[...document.querySelectorAll('.capability-grid article,.rival,.manifesto-grid,.demo-stage,.finale h2')];
+if(!reduced&&'IntersectionObserver'in window){reveal.forEach(x=>{x.style.opacity='0';x.style.transform='translateY(20px)';x.style.transition='opacity .7s ease,transform .7s ease'});const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';io.unobserve(e.target)}}),{threshold:.12});reveal.forEach(x=>io.observe(x))}
