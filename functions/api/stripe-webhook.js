@@ -15,11 +15,16 @@ export async function onRequestPost(context) {
   if (event.type === 'checkout.session.completed') {
     const session = event.data.object;
     const email = session.customer_details?.email || session.customer_email || 'unknown';
+    const name = session.customer_details?.name || 'Not provided';
     const plan = session.metadata?.plan || 'unknown';
     const amount = ((session.amount_total || 0) / 100).toFixed(2);
-    const resendKey = context.env.RESEND_API_KEY;
-    if (resendKey) {
-      await fetch('https://api.resend.com/emails', { method:'POST', headers:{Authorization:`Bearer ${resendKey}`,'Content-Type':'application/json'}, body:JSON.stringify({ from:'ChatGPTWebMaker <orders@calyvent.com>', to:['contact@calyvent.com'], subject:`New ChatGPTWebMaker purchase: ${plan}`, html:`<h2>New ChatGPTWebMaker purchase</h2><p><b>Plan:</b> ${plan}</p><p><b>Amount:</b> $${amount}</p><p><b>Customer:</b> ${email}</p><p><b>Stripe session:</b> ${session.id}</p><p>The customer has completed payment. Contact them for project information and fulfillment.</p>`}) });
+    const details = { plan, amount: `$${amount}`, customer: name, email, stripe_session: session.id, paid_at: new Date().toISOString(), next_step: 'Customer should complete the project intake form.' };
+    const html = `<h2>New ChatGPTWebMaker purchase</h2><p><b>They just paid.</b></p>${Object.entries(details).map(([k,v])=>`<p><b>${k.replaceAll('_',' ')}:</b> ${String(v)}</p>`).join('')}`;
+    if (context.env.RESEND_API_KEY) {
+      await fetch('https://api.resend.com/emails', { method:'POST', headers:{Authorization:`Bearer ${context.env.RESEND_API_KEY}`,'Content-Type':'application/json'}, body:JSON.stringify({ from:'ChatGPTWebMaker <orders@calyvent.com>', to:['contact@calyvent.com'], subject:`New ChatGPTWebMaker purchase: ${plan}`, html }) });
+    } else {
+      const form = new URLSearchParams({ _subject:`New ChatGPTWebMaker purchase: ${plan}`, message:`They just paid on ChatGPTWebMaker.\n\n${Object.entries(details).map(([k,v])=>`${k}: ${v}`).join('\n')}` });
+      await fetch('https://formsubmit.co/ajax/contact@calyvent.com', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded','Accept':'application/json'}, body:form });
     }
   }
   return Response.json({ received: true });
