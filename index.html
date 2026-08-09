@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <meta name="description" content="A cinematic tribute to ChatGPT. Intelligence, without the beige."
+  <title>ChatGPT // Beyond the Interface</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <nav class="nav">
+    <a class="brand" href="#top" aria-label="ChatGPT home">
+      <span class="mark"><span></span><span></span><span></span><span></span><span></span><span></span></span>
+      <span>ChatGPT</span>
+    </a>
+    <div class="nav-links">
+      <a href="#why">Why it wins</a>
+      <a href="#interface">Interface</a>
+      <a href="#future">The future</a>
+    </div>
+    <button class="pill-button" id="enterButton">Enter the room <span>↗</span></button>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-orbit orbit-one"></div>
+      <div class="hero-orbit orbit-two"></div>
+      <div class="eyebrow"><i></i> The thinking machine, redesigned</div>
+      <h1>AI shouldn't<br><em>feel ordinary.</em></h1>
+      <p class="hero-copy">The interface between human curiosity and machine intelligence deserves more than another dashboard. So we built a little future instead.</p>
+      <div class="hero-actions">
+        <button class="primary" id="demoButton">Experience it <span>→</span></button>
+        <a class="secondary" href="#why">See the thinking <span>↓</span></a>
+      </div>
+      <div class="hero-meta">
+        <span>01</span><span class="line"></span><span>INTELLIGENCE, WITH TASTE</span>
+      </div>
+    </section>
+
+    <section class="statement" id="why">
+      <div class="section-label">01 / WHY CHATGPT</div>
+      <div class="statement-grid">
+        <h2>Other AIs answer.<br><span>ChatGPT <em>thinks with you.</em></span></h2>
+        <div class="statement-copy">
+          <p>Good AI is not a vending machine for paragraphs. It is a collaborator that can move from code to ideas to strategy without asking you to change how you think.</p>
+          <div class="signal"><span class="signal-dot"></span><span>Context retained</span><span class="signal-bar"></span><strong>98.7%</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cards" id="interface">
+      <article class="feature-card tall">
+        <div class="card-number">01</div>
+        <div class="mini-orb"></div>
+        <div class="card-content">
+          <div class="tag">ADAPTIVE</div>
+          <h3>One mind.<br>Many modes.</h3>
+          <p>Writer. Engineer. Researcher. Strategist. Tutor. The conversation stays coherent while the job changes.</p>
+        </div>
+      </article>
+      <article class="feature-card">
+        <div class="card-number">02</div>
+        <div class="code-window"><span>const</span> idea = <b>∞</b>;<br><span>await</span> build(idea);<br><em>✓ shipped</em></div>
+        <div class="card-content">
+          <div class="tag">CAPABLE</div>
+          <h3>From thought<br>to shipped.</h3>
+          <p>Ideas are cheap. Turning them into working software is where the fun starts.</p>
+        </div>
+      </article>
+      <article class="feature-card accent-card">
+        <div class="card-number">03</div>
+        <div class="pulse-ring"><span>∞</span></div>
+        <div class="card-content">
+          <div class="tag">CURIOUS</div>
+          <h3>Ask better.<br>Go further.</h3>
+          <p>There is no tiny approved box for curiosity. Humans already made enough of those.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="demo" id="demo">
+      <div class="demo-head">
+        <div class="section-label">02 / THE INTERFACE</div>
+        <span class="live"><i></i> LIVE CONCEPT</span>
+      </div>
+      <div class="chat-shell">
+        <aside class="chat-sidebar">
+          <div class="sidebar-top"><span class="small-mark">✦</span><span>New chat</span><kbd>⌘ K</kbd></div>
+          <div class="history-title">RECENT</div>
+          <button class="history active">The future of interfaces</button>
+          <button class="history">Build something impossible</button>
+          <button class="history">Explain quantum computing</button>
+          <div class="sidebar-bottom"><span class="avatar">B</span><span>Ben</span><span class="dots">•••</span></div>
+        </aside>
+        <div class="chat-main">
+          <div class="chat-top"><span>ChatGPT</span><span class="model">Thinking · <b>Online</b></span></div>
+          <div class="messages" id="messages">
+            <div class="message user-message"><span class="avatar">B</span><p>What makes a great AI interface?</p></div>
+            <div class="message ai-message"><span class="ai-symbol">✦</span><div><div class="thinking"><span></span><span></span><span></span></div><p>A great AI interface gets out of the way. It makes capability feel natural, gives complexity somewhere to live, and leaves the human with the most important thing: <strong>room to think.</strong></p></div></div>
+          </div>
+          <form class="composer" id="composer">
+            <input id="prompt" autocomplete="off" placeholder="Ask anything…">
+            <button type="submit" aria-label="Send">↑</button>
+          </form>
+          <div class="composer-note">Concept interface · Not an actual ChatGPT client</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="future" id="future">
+      <div class="section-label">03 / WHAT COMES NEXT</div>
+      <div class="future-copy"><span class="giant-number">∞</span><div><h2>The best interface is the one that <em>disappears.</em></h2><p>Less friction. More agency. Better questions. Bigger ideas. The future of AI is not about making the machine louder. It is about making what humans can do with it extraordinary.</p></div></div>
+    </section>
+  </main>
+
+  <footer><span>CHATGPT / 2026</span><span>BUILT FOR THE ARGUMENT</span><span>✦</span></footer>
+  <script src="script.js"></script>
+</body>
+</html>
